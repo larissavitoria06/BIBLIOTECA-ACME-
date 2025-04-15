@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/Alunos');
+const { PrismaClient } = require('@prisma/Client'); 
 const prisma = new PrismaClient();
 
 const create = async (req, res) => {
@@ -47,7 +47,7 @@ const update = async (req, res) => {
             },
             data: req.body
         });
-        return res.status(202).json(aluno);
+        return res.status(200).json(aluno); 
     } catch (error) {
         return res.status(400).json({ error: error.message });
     }
@@ -60,7 +60,7 @@ const remove = async (req, res) => {
                 aluno_ra: req.params.ra 
             }
         });
-        return res.status(204).send();
+        return res.status(204).send(); 
     } catch (error) {
         return res.status(404).json({ error: error.message });
     }
