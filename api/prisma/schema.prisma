@@ -1,5 +1,5 @@
 generator aluno {
-  provider = "prisma-aluno-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
