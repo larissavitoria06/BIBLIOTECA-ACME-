@@ -4,40 +4,30 @@ generator aluno {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url = env("DATABASE_URL")
 }
 
-model Aluno{
-  aluno_ra String @db.VarChar(255)
-  nome String @db.VarChar(100)
-  telefone String @db.VarChar(255)
-  pedidos Pedido[]
+model Aluno {
+  aluno_ra String@id @db.VarChar(255)
+  nome String@db.VarChar(100)
+  telefone String@db.VarChar(255)
+  emprestimos Emprestimo[]
 }
 
-model emprestimo_id{
-  emprestimo_id Int @id @default(autoincrement())
-  nome String @db.VarChar(100)
-  livro Int @id @default(autoincrement())
-  data_retirada DateTime @default(now())
-   data_devolucao DateTime @default(now())
-  itens Item[]
+model Livro {
+  livro_id Int@id @default(autoincrement())
+  titulo String@db.VarChar(255)
+  autor String@db.VarChar(255)
+  emprestimos Emprestimo[] 
 }
 
-model Livro{
-  livro_id Int @id @default(autoincrement())
-   String @db.VarChar(255)
-  valor Decimal? @db.Decimal(10,2)
-  aluno Aluno @relation(fields: [aluno_ra], references: [aluno_ra])
-  itens Item[]
-}
+model Emprestimo {
+  id Int @id @default(autoincrement())
+  aluno_ra String
+  livro_id Int
+  data_retirada DateTime@default(now())
+  data_devolucao DateTime?
+  aluno Aluno @relation(fields:[aluno_ra],references:[aluno_ra])
+  livro Livro @relation(fields:[livro_id],references:[livro_id])
 
-model Item{
-  item_id Int @id @default(autoincrement())
-  pedido_id Int
-  emprestimo_id_id Int
-  quantidade Int
-  valor Decimal @db.Decimal(10,2) @default(0)
-  sub_total Decimal? @db.Decimal(10,2)
-  pedido Pedido @relation(fields: [pedido_id], references: [pedido_id], onDelete: Cascade)
-  emprestimo_id emprestimo_id @relation(fields: [emprestimo_id_id], references: [emprestimo_id_id])
 }
