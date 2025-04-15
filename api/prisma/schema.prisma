@@ -1,0 +1,43 @@
+generator aluno {
+  provider = "prisma-aluno-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Aluno{
+  aluno_ra String @db.VarChar(255)
+  nome String @db.VarChar(100)
+  telefone String @db.VarChar(255)
+  pedidos Pedido[]
+}
+
+model emprestimo_id{
+  emprestimo_id Int @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  livro Int @id @default(autoincrement())
+  data_retirada DateTime @default(now())
+   data_devolucao DateTime @default(now())
+  itens Item[]
+}
+
+model Livro{
+  livro_id Int @id @default(autoincrement())
+   String @db.VarChar(255)
+  valor Decimal? @db.Decimal(10,2)
+  aluno Aluno @relation(fields: [aluno_ra], references: [aluno_ra])
+  itens Item[]
+}
+
+model Item{
+  item_id Int @id @default(autoincrement())
+  pedido_id Int
+  emprestimo_id_id Int
+  quantidade Int
+  valor Decimal @db.Decimal(10,2) @default(0)
+  sub_total Decimal? @db.Decimal(10,2)
+  pedido Pedido @relation(fields: [pedido_id], references: [pedido_id], onDelete: Cascade)
+  emprestimo_id emprestimo_id @relation(fields: [emprestimo_id_id], references: [emprestimo_id_id])
+}
